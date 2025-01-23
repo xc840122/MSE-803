@@ -23,3 +23,5 @@ iris_X=iris_df.iloc[:5,[0,1,2,3]]
 print(iris_X)
 
 ### TASK2: Here - Write a short readme to explain above code and how we can calculate the corrolation amoung featuers with description
+correlation_matrix = iris_df[['sepal_len', 'sepal_wid', 'petal_len', 'petal_wid']].corr().round(2)
+print("Correlation Matrix:\n", correlation_matrix)
