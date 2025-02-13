@@ -6,4 +6,7 @@ plt.plot(x, y, marker='o')
 plt.xlabel('X-axis')
 plt.ylabel('Y-axis')
 plt.title('Basic Line Plot')
+
+# Save the plot as an image file locally
+plt.savefig('line_plot.png', dpi=300, bbox_inches='tight') 
 plt.show()
