@@ -77,6 +77,7 @@ y_pred_lstm = scaler.inverse_transform(y_pred_lstm)
 ann_model = Sequential([
     Dense(64, activation='relu', input_shape=(1,)),
     Dense(32, activation='relu'),
+    Dense(16, activation='relu'),  
     Dense(1)
 ])
 ann_model.compile(optimizer='adam', loss='mse')
