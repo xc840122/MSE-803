@@ -62,7 +62,14 @@ xgb_model = xgb.XGBRegressor(objective="reg:squarederror")
 xgb_model.fit(X_train, y_train)
 y_pred_xgb = xgb_model.predict(X_test)
 
-# LSTM Model
+# Reshape for LSTM
+X_train_lstm, y_train_lstm = train_scaled[:-1], train_scaled[1:]
+X_test_lstm, y_test_lstm = test_scaled[:-1], test_scaled[1:]
+
+X_train_lstm = X_train_lstm.reshape((X_train_lstm.shape[0], 1, 1))
+X_test_lstm = X_test_lstm.reshape((X_test_lstm.shape[0], 1, 1))
+
+# # LSTM Model
 lstm_model = Sequential([
     LSTM(50, activation='relu', return_sequences=True, input_shape=(1,1)),
     LSTM(50, activation='relu'),
@@ -98,10 +105,11 @@ def evaluate_model(y_true, y_pred, model_name):
     print(f"R2 Score: {r2_score(y_true, y_pred):.2f}")
     print("-" * 40)
 
-# Evaluate All Models
+# # Evaluate All Models
 evaluate_model(y_test, y_pred_lr, "Linear Regression")
 evaluate_model(y_test, y_pred_xgb, "XGBoost")
 # evaluate_model(y_test, y_pred_lstm.flatten(), "LSTM") # activity : Check the code for LSTM
+evaluate_model(y_test_lstm, y_pred_lstm.flatten(), "LSTM")  # Use y_test_lstm for LSTM evaluation
 evaluate_model(y_test, y_pred_ann.flatten(), "ANN")
 evaluate_model(y_test, y_pred_arima, "ARIMA")
 
@@ -111,6 +119,7 @@ plt.plot(y_test.index, y_test, label="Actual")
 plt.plot(y_test.index, y_pred_lr, label="Linear Regression", linestyle="dashed")
 plt.plot(y_test.index, y_pred_xgb, label="XGBoost", linestyle="dashed")
 # plt.plot(y_test.index, y_pred_lstm.flatten(), label="LSTM", linestyle="dashed")
+plt.plot(y_test.index[1:], y_pred_lstm.flatten(), label="LSTM", linestyle="dashed") 
 plt.plot(y_test.index, y_pred_ann.flatten(), label="ANN", linestyle="dashed")
 plt.plot(y_test.index, y_pred_arima, label="ARIMA", linestyle="dashed")
 plt.legend()
